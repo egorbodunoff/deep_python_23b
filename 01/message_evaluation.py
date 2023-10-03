@@ -4,7 +4,10 @@ import math
 class SomeModel:
     @staticmethod
     def predict(message: str) -> float:
-        return 1 / (1 + 100 * math.exp(-0.4 * len(message)))
+        if isinstance(message, str):
+            return 1 / (1 + 100 * math.exp(-0.4 * len(message)))
+        else:
+            raise TypeError
 
 
 def predict_message_mood(

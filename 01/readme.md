@@ -13,33 +13,40 @@
         <tbody>
             <tr class="file">
                 <td class="name left"><a href="generator_py.html">generator.py</a></td>
-                <td>20</td>
+                <td>19</td>
                 <td>0</td>
                 <td>0</td>
-                <td class="right" data-ratio="20 20">100%</td>
+                <td class="right" data-ratio="19 19">100%</td>
             </tr>
             <tr class="file">
                 <td class="name left"><a href="message_evaluation_py.html">message_evaluation.py</a></td>
-                <td>12</td>
+                <td>14</td>
                 <td>0</td>
                 <td>0</td>
-                <td class="right" data-ratio="12 12">100%</td>
+                <td class="right" data-ratio="14 14">100%</td>
             </tr>
             <tr class="file">
-                <td class="name left"><a href="test_evaluation_py.html">test_evaluation.py</a></td>
-                <td>44</td>
+                <td class="name left"><a href="test_generator_py.html">test_generator.py</a></td>
+                <td>23</td>
+                <td>1</td>
                 <td>0</td>
+                <td class="right" data-ratio="22 23">96%</td>
+            </tr>
+            <tr class="file">
+                <td class="name left"><a href="test_message_evaluation_py.html">test_message_evaluation.py</a></td>
+                <td>36</td>
+                <td>1</td>
                 <td>0</td>
-                <td class="right" data-ratio="44 44">100%</td>
+                <td class="right" data-ratio="35 36">97%</td>
             </tr>
         </tbody>
         <tfoot>
             <tr class="total">
                 <td class="name left">Total</td>
-                <td>76</td>
+                <td>92</td>
+                <td>2</td>
                 <td>0</td>
-                <td>0</td>
-                <td class="right" data-ratio="76 76">100%</td>
+                <td class="right" data-ratio="90 92">98%</td>
             </tr>
         </tfoot>
     </table>
