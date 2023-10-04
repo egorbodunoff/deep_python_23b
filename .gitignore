@@ -1,7 +1,7 @@
 venv/
-01/htmlcov/
+**/htmlcov/
 **/__pycache__
-01/.coverage
-02/.coverage
+**/.coverage
 01/text.txt
-01/.DS_Store
+02/__pycache__/
+

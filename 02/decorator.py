@@ -17,7 +17,7 @@ def mean(k):
                 wrapper.mean = (sum(wrapper.runtime[func.__name__]) /
                                 len(wrapper.runtime[func.__name__]))
 
-            return wrapper.mean
+            print(wrapper.mean)
 
         wrapper.runtime = defaultdict(list)
         wrapper.mean = None
@@ -25,22 +25,3 @@ def mean(k):
         return wrapper
 
     return inner_mean
-
-
-# @mean('a')
-# def foo(arg):
-#     return arg
-# print(f.mean)
-# # print(f.mean)
-# @mean(3)
-# def bar():
-#     time.sleep(0.5)
-#
-#
-# for _ in range(3):
-#     print(foo(1))
-#     print(bar())
-# for _ in range(4):
-#     bar()
-#
-# # print(bar.__dict__['mean'])
