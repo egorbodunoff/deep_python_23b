@@ -75,6 +75,14 @@ class TestEvaluation(unittest.TestCase):
 
         self.assertEqual(SomeModel().predict('яблоко и груша'), 0.7300408448338399)
 
+    def test_arg_transfer(self):
+        with mock.patch('message_evaluation.SomeModel.predict') as mock_predict:
+            mock_predict.return_value = 0.8
+
+            predict_message_mood('груша', SomeModel())
+
+        self.assertEqual(mock_predict.call_args[0][0], 'груша')
+
     def test_bad_argument(self):
         with self.assertRaises(TypeError):
             SomeModel().predict([1])

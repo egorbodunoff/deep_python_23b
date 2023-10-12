@@ -7,19 +7,20 @@ def mean(k):
         def wrapper(*args, **kwargs):
             time_start = time.time()
 
-            func(*args, **kwargs)
+            result = func(*args, **kwargs)
             duration = time.time() - time_start
-            wrapper.runtime[func.__name__].append(duration)
+            wrapper.runtime.append(duration)
 
-            if len(wrapper.runtime[func.__name__]) >= k:
-                wrapper.mean = sum(wrapper.runtime[func.__name__][-k:]) / k
+            if len(wrapper.runtime) >= k:
+                wrapper.mean = sum(wrapper.runtime[-k:]) / k
             else:
-                wrapper.mean = (sum(wrapper.runtime[func.__name__]) /
-                                len(wrapper.runtime[func.__name__]))
+                wrapper.mean = (sum(wrapper.runtime) /
+                                len(wrapper.runtime))
 
             print(wrapper.mean)
+            return result
 
-        wrapper.runtime = defaultdict(list)
+        wrapper.runtime = list()
         wrapper.mean = None
 
         return wrapper

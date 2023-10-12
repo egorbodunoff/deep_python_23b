@@ -52,3 +52,11 @@ class TestDecorator(unittest.TestCase):
             result = math.isclose(i[0][0], 1.0, rel_tol=1e-2)
 
             self.assertEqual(result, True)
+
+    def test_func_return(self):
+        @mean(3)
+        def foo(*args):
+            return args
+
+        result = foo(1)
+        self.assertEqual(result, (1,))

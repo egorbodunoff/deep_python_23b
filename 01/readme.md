@@ -34,19 +34,19 @@
             </tr>
             <tr class="file">
                 <td class="name left"><a href="test_message_evaluation_py.html">test_message_evaluation.py</a></td>
-                <td>36</td>
+                <td>41</td>
                 <td>1</td>
                 <td>0</td>
-                <td class="right" data-ratio="35 36">97%</td>
+                <td class="right" data-ratio="40 41">98%</td>
             </tr>
         </tbody>
         <tfoot>
             <tr class="total">
                 <td class="name left">Total</td>
-                <td>92</td>
+                <td>97</td>
                 <td>2</td>
                 <td>0</td>
-                <td class="right" data-ratio="90 92">98%</td>
+                <td class="right" data-ratio="95 97">98%</td>
             </tr>
         </tfoot>
     </table>
