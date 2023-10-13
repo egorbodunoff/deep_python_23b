@@ -56,7 +56,7 @@ class TestParseJson(unittest.TestCase):
             for call in mock_callback.call_args_list:
                 call_arg.append(call[0])
 
-            self.assertEqual(set(call_arg), set(test_case['expected_result']))
+            self.assertEqual(call_arg, test_case['expected_result'])
 
     def test_call_count(self):
         for test_case in self.test_cases:
@@ -70,4 +70,3 @@ class TestParseJson(unittest.TestCase):
             parse_json(self.json_str, "not_func", ['key1'], ['ffv'])
 
         self.assertEqual(type(err.exception), TypeError)
-
