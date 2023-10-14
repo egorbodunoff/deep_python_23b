@@ -6,7 +6,7 @@ class CustomMeta(type):
             object.__setattr__(self, f"custom_{attr_name}", attr_val)
 
         for name, value in classdict.items():
-            if not name[:2] == "__" and not name[-2:] == "__":
+            if not name.startswith('__') and not name.endswith("__"):
                 attrs[f"custom_{name}"] = value
             else:
                 attrs[name] = value
@@ -14,3 +14,4 @@ class CustomMeta(type):
         cls = super().__new__(cls, name, bases, attrs)
         setattr(cls, __setattr__.__name__, __setattr__)
         return cls
+

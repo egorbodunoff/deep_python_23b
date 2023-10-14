@@ -4,12 +4,10 @@ class LineUpDescriptor:
 
     def __get__(self, obj, obj_type):
         res = getattr(obj, self.name)
-        line_up = f"Cтартовый состав на сегодняшний матч: {res[0]} \n"
 
-        for x in res[1:]:
-            line_up += 38 * " " + x + "\n"
+        line_up = ', '.join(res)
 
-        return line_up[:-1]
+        return "Cтартовый состав на сегодняшний матч: " + line_up.rstrip()
 
     def __set__(self, obj, line_up):
         if not isinstance(line_up, list):
@@ -19,29 +17,34 @@ class LineUpDescriptor:
             if not isinstance(val, str):
                 raise TypeError("имена игроков должны быть строками")
 
-        if len(line_up) > 11:
-            raise ValueError("В стартовом составе не может быть больше 11 игроков")
+        if len(line_up) > 5 or len(line_up) < 3:
+            raise ValueError("В стартовом составе должно быть от 3 до 5 игроков")
 
         return setattr(obj, self.name, line_up)
 
 
-class CardDescriptor:
+class DurationDescriptor:
     def __set_name__(self, owner, name):
         self.name = f"card_descr_{name}"
 
     def __get__(self, obj, obj_type):
         res = getattr(obj, self.name)
 
-        return f"В матче было получено {res} карточек"
+        if res % 10 == 1 and res != 11:
+            return f"Длительность матча {res} минута"
+        if res % 10 in [2, 3, 4] and res not in [12, 13, 14]:
+            return f"Длительность матча {res} минуты"
+        if res % 10 in [0, 5, 6, 7, 8, 9] or res in [11, 12, 13, 14]:
+            return f"Длительность матча {res} минут"
 
-    def __set__(self, obj, count_card):
-        if not isinstance(count_card, int):
-            raise TypeError("Количество карточек должно быть целым числом")
+    def __set__(self, obj, duration):
+        if not isinstance(duration, int):
+            raise TypeError("продолжительность матча должна быть целым числом")
 
-        if count_card > 11 or count_card < 0:
-            raise ValueError("Количество карточек должно лежать в диапазоне [0, 11]")
+        if duration > 60 or duration < 0:
+            raise ValueError("длительность матча должна лежать в диапазоне [0, 60]")
 
-        return setattr(obj, self.name, count_card)
+        return setattr(obj, self.name, duration)
 
 
 class ResDescriptor:
@@ -53,12 +56,12 @@ class ResDescriptor:
         name = list(res.keys())
         val = list(res.values())
 
-        line_name = name[0] + " --- " + name[1] + "\n"
-        line_val1 = (int(len(name[0]) / 2) * " " + str(val[0])
-                     + (4 + int(len(name[0]) / 2)) * " ")
-        line_val2 = int(len(name[1]) / 2) * " " + str(val[1])
-
-        return line_name + line_val1 + line_val2
+        if val[0] > val[1]:
+            return f"со счетом {val[0]} : {val[1]} победила команда {name[0]}"
+        if val[0] < val[1]:
+            return f"со счетом {val[1]} : {val[0]} победила команда {name[1]}"
+        else:
+            return f"ничейный резултат"
 
     def __set__(self, obj, res):
         if not isinstance(res, dict):
@@ -80,14 +83,14 @@ class ResDescriptor:
 
 class Match:
     line_up = LineUpDescriptor()
-    count_card = CardDescriptor()
+    duration = DurationDescriptor()
     res = ResDescriptor()
 
-    def __init__(self, line_up, count_card, res):
+    def __init__(self, line_up, duration, res):
         self.line_up = line_up
-        self.count_card = count_card
+        self.duration = duration
         self.res = res
 
 
-a = Match(["messi", "ronaldo", "магваер"], 6, {"efimov": 1, "xalikov": 4})
-print(a.res)
+# a = Match(['11', "efw", "c"], 25, {})
+# print(a.duration)
