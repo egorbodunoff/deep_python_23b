@@ -104,5 +104,3 @@ class CustomList(list):
 
         return (f"элементы CustomList: {[(self[i]) for i in range(len(self))]}"
                 f", их сумма: {sum(self)}")
-
-

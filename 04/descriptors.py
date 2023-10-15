@@ -79,18 +79,3 @@ class ResDescriptor:
                 raise ValueError("количество голов не может быть меньше 0")
 
         return setattr(obj, self.name, res)
-
-
-class Match:
-    line_up = LineUpDescriptor()
-    duration = DurationDescriptor()
-    res = ResDescriptor()
-
-    def __init__(self, line_up, duration, res):
-        self.line_up = line_up
-        self.duration = duration
-        self.res = res
-
-
-# a = Match(['11', "efw", "c"], 25, {})
-# print(a.duration)

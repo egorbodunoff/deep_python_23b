@@ -14,4 +14,3 @@ class CustomMeta(type):
         cls = super().__new__(cls, name, bases, attrs)
         setattr(cls, __setattr__.__name__, __setattr__)
         return cls
-

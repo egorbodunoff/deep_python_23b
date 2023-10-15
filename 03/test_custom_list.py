@@ -13,11 +13,14 @@ class TestCustomList(unittest.TestCase):
         self.l6 = [6, 2]
 
     def compare(self, list1, list2):
-        for i in range(len(list1)):
-            self.assertEqual(list1[i], list2[i])
+        if len(list1) == len(list2):
+            for i in range(len(list1)):
+                self.assertEqual(list1[i], list2[i])
+        else:
+            self.fail("длины массивов должны быть одинаковыми")
 
     def test_add(self):
-        self.compare(self.l1 + self.l2, CustomList([6, 3, 10, 7]))
+        self.compare(self.l1 + self.l2, CustomList([6, 3, 10, 7, 6]))
         self.compare(self.l1 + self.l2, CustomList([6, 3, 10, 7]))
         self.compare(self.l2 + self.l3, CustomList([6, 6, 9]))
         self.compare(self.l3 + self.l1, CustomList([10, 5, 5, 7]))
