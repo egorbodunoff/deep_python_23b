@@ -20,7 +20,7 @@ class TestCustomList(unittest.TestCase):
             self.fail("длины массивов должны быть одинаковыми")
 
     def test_add(self):
-        self.compare(self.l1 + self.l2, CustomList([6, 3, 10, 7, 6]))
+        self.compare(self.l1 + self.l2, CustomList([6, 3, 10, 7]))
         self.compare(self.l1 + self.l2, CustomList([6, 3, 10, 7]))
         self.compare(self.l2 + self.l3, CustomList([6, 6, 9]))
         self.compare(self.l3 + self.l1, CustomList([10, 5, 5, 7]))
