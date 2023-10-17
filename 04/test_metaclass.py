@@ -59,11 +59,16 @@ class TestMetaClass(unittest.TestCase):
     def test_dynamic_atr(self):
         inst = self.custom_class(30)
         inst.dynamic = "added later"
+        inst.__mag__ = "add magic"
 
         self.assertEqual(inst.custom_val, 30)
         self.assertEqual(inst.custom_dynamic, "added later")
+        self.assertEqual(inst.__mag__, "add magic")
 
         with self.assertRaises(AttributeError) as err:
             print(inst.dynamic)
+        self.assertEqual(type(err.exception), AttributeError)
+        with self.assertRaises(AttributeError) as err:
+            print(inst.custom__mag__)
         self.assertEqual(type(err.exception), AttributeError)
 

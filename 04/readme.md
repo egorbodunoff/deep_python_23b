@@ -14,39 +14,39 @@
             <tr class="file">
                 <td class="name left"><a href="descriptors_py.html">descriptors.py</a></td>
                 <td>56</td>
-                <td>8</td>
+                <td>6</td>
                 <td>0</td>
-                <td class="right" data-ratio="48 56">86%</td>
+                <td class="right" data-ratio="50 56">89%</td>
             </tr>
             <tr class="file">
                 <td class="name left"><a href="metaclass_py.html">metaclass.py</a></td>
-                <td>12</td>
+                <td>14</td>
                 <td>0</td>
                 <td>0</td>
-                <td class="right" data-ratio="12 12">100%</td>
+                <td class="right" data-ratio="14 14">100%</td>
             </tr>
             <tr class="file">
                 <td class="name left"><a href="test_descriptors_py.html">test_descriptors.py</a></td>
-                <td>49</td>
-                <td>20</td>
+                <td>54</td>
+                <td>21</td>
                 <td>0</td>
-                <td class="right" data-ratio="29 49">59%</td>
+                <td class="right" data-ratio="33 54">61%</td>
             </tr>
             <tr class="file">
                 <td class="name left"><a href="test_metaclass_py.html">test_metaclass.py</a></td>
-                <td>48</td>
+                <td>53</td>
                 <td>1</td>
                 <td>0</td>
-                <td class="right" data-ratio="47 48">98%</td>
+                <td class="right" data-ratio="52 53">98%</td>
             </tr>
         </tbody>
         <tfoot>
             <tr class="total">
                 <td class="name left">Total</td>
-                <td>165</td>
-                <td>29</td>
+                <td>177</td>
+                <td>28</td>
                 <td>0</td>
-                <td class="right" data-ratio="136 165">82%</td>
+                <td class="right" data-ratio="149 177">84%</td>
             </tr>
         </tfoot>
     </table>

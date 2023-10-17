@@ -3,7 +3,10 @@ class CustomMeta(type):
         attrs = {}
 
         def __setattr__(self, attr_name, attr_val):
-            object.__setattr__(self, f"custom_{attr_name}", attr_val)
+            if not attr_name.startswith('__') and not name.endswith('--'):
+                object.__setattr__(self, f"custom_{attr_name}", attr_val)
+            else:
+                object.__setattr__(self, attr_name, attr_val)
 
         for name, value in classdict.items():
             if not name.startswith('__') and not name.endswith("__"):

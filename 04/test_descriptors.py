@@ -1,5 +1,4 @@
 import unittest
-from unittest import mock
 
 from descriptors import LineUpDescriptor, DurationDescriptor, ResDescriptor
 
@@ -101,7 +100,7 @@ class TestDescriptors(unittest.TestCase):
 
         ]
 
-    def test_line_up_desc(self):
+    def test_desc(self):
         for test_case in self.test_cases:
             m = self.Match(*test_case['arg'].values())
             res = [m.line_up, m.duration, m.res]
@@ -116,35 +115,45 @@ class TestDescriptors(unittest.TestCase):
             self.assertEqual(err.exception.args, test_case['error_arg'])
             self.assertEqual(type(err.exception), test_case['expected_result'])
 
-    def set_attr(self):
+    def test_set_attr(self):
         m = self.Match(['вася', 'петя', 'артем'], 25, {'Звезда': 3, 'Искра': 2})
 
         m.line_up = ['ваня', 'дима', 'егор']
         self.assertEqual(m.line_up, 'Cтартовый состав на сегодняшний матч: ваня, дима, егор')
 
         m.duration = 15
-        self.assertEqual(m.duration, 'Длительность матча 25 минут')
+        self.assertEqual(m.duration, 'Длительность матча 15 минут')
 
         m.res = {'команда1': 2, 'команда2': 1}
         self.assertEqual(m.res, 'со счетом 2 : 1 победила команда команда1')
 
-    def set_bad_attr(self):
-        m = self.Match(['вася', 'петя', 'артем'], 25, {'Звезда': 3, 'Искра': 2})
+    def test_set_bad_attr(self):
+        line_arg = ['вася', 'петя', 'артем']
+        duration_arg = 25
+        res_arg = {'Звезда': 3, 'Искра': 2}
+
+        m = self.Match(line_arg, duration_arg, res_arg)
 
         with self.assertRaises(ValueError) as err:
             m.line_up = ['ваня', 'дима']
-        self.assertEqual(err.exception.args,
+        self.assertEqual(err.exception.args[0],
                          "В стартовом составе должно быть от 3 до 5 игроков")
         self.assertEqual(type(err.exception), ValueError)
 
         with self.assertRaises(ValueError) as err:
             m.duration = -1
-        self.assertEqual(err.exception.args,
-                         "продолжительность матча должна быть целым числом")
+        self.assertEqual(err.exception.args[0],
+                         "длительность матча должна лежать в диапазоне [0, 60]")
+        self.assertEqual(type(err.exception), ValueError)
+
+        with self.assertRaises(TypeError) as err:
+            m.res = ['команда1', 2, 'команда2', 1]
+        self.assertEqual(err.exception.args[0], "необходимо передать результаты в виде словаря"
+                                                "например {Искра: 3, Звезда: 1")
         self.assertEqual(type(err.exception), TypeError)
 
-        with self.assertRaises(ValueError) as err:
-            m.res = ['команда1', 2, 'команда2', 1]
-        self.assertEqual(err.exception.args, "необходимо передать результаты в виде словаря"
-                                             "например {Искра: 3, Звезда: 1")
-        self.assertEqual(type(err.exception), TypeError)
+        self.assertEqual(m.line_up, 'Cтартовый состав на сегодняшний матч: вася, петя, артем')
+
+        self.assertEqual(m.duration, 'Длительность матча 25 минут')
+
+        self.assertEqual(m.res, 'со счетом 3 : 2 победила команда Звезда')
