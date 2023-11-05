@@ -14,33 +14,33 @@
         <tbody>
             <tr class="file">
                 <td class="name left"><a href="client_py.html">client.py</a></td>
-                <td>48</td>
+                <td>46</td>
                 <td>7</td>
                 <td>0</td>
-                <td class="right" data-ratio="41 48">85%</td>
+                <td class="right" data-ratio="39 46">85%</td>
             </tr>
             <tr class="file">
                 <td class="name left"><a href="server_py.html">server.py</a></td>
-                <td>68</td>
-                <td>43</td>
+                <td>73</td>
+                <td>15</td>
                 <td>0</td>
-                <td class="right" data-ratio="25 68">37%</td>
+                <td class="right" data-ratio="58 73">79%</td>
             </tr>
             <tr class="file">
                 <td class="name left"><a href="tests_py.html">tests.py</a></td>
-                <td>45</td>
+                <td>91</td>
                 <td>0</td>
                 <td>0</td>
-                <td class="right" data-ratio="45 45">100%</td>
+                <td class="right" data-ratio="91 91">100%</td>
             </tr>
         </tbody>
         <tfoot>
             <tr class="total">
                 <td class="name left">Total</td>
-                <td>161</td>
-                <td>50</td>
+                <td>210</td>
+                <td>22</td>
                 <td>0</td>
-                <td class="right" data-ratio="111 161">69%</td>
+                <td class="right" data-ratio="188 210">90%</td>
             </tr>
         </tfoot>
     </table>

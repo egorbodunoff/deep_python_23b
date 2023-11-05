@@ -43,25 +43,21 @@ def create_client(que):
         client.close()
 
 
-def create_urls(file_name):
-    urls = []
-
-    try:
-        with open(file_name, "r") as file:
-            for row in file:
-                urls.append(row.rstrip())
-    except FileNotFoundError:
-        print("Файл с таким именем не был найден")
-
-    return urls
-
-
 def run_client(m, file_name):
     if not m.isdecimal():
         raise ValueError("Количество потоков должно быть числом")
 
     urls = create_urls(file_name)
     run_exp(urls, int(m))
+
+
+def create_urls(file_name):
+    try:
+        with open(file_name, 'r') as urls:
+            for row in urls:
+                yield row.rstrip()
+    except FileNotFoundError:
+        yield None
 
 
 if __name__ == "__main__":

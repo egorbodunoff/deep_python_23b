@@ -5,6 +5,7 @@ import socket
 import threading
 import json
 import argparse
+import time
 
 
 def client_response(con, k):
@@ -16,6 +17,7 @@ def client_response(con, k):
         popular_words = word_counter(words, k)
         json_data = json.dumps(popular_words, ensure_ascii=False)
 
+        time.sleep(0.01)
         con.send(json_data.encode())
         con.close()
 
@@ -51,6 +53,7 @@ def start_server():
     server.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
     server.bind(("localhost", 2023))
     server.listen()
+    server.settimeout(4)
     print("Server running")
     return server
 
@@ -60,6 +63,9 @@ def client_thread(server, k):
         while True:
             client, _ = server.accept()
             client_response(client, k)
+
+    except TimeoutError:
+        server.close()
 
     except KeyboardInterrupt:
         server.close()
