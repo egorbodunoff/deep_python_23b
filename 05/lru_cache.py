@@ -46,7 +46,7 @@ class LRUCache:
 
     def set(self, key, value):
         if key in self.cache_dict:
-            self.cache_dict[key].val = value
+            self.dbl.remove(self.cache_dict[key])
 
         elem = Link(key, value)
         self.cache_dict[key] = elem

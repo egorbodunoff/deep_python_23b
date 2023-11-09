@@ -4,32 +4,71 @@ from lru_cache import LRUCache
 
 
 class TestMetaClass(unittest.TestCase):
-    def setUp(self) -> None:
-        self.cache = LRUCache(2)
-        self.cache.set("k1", "val1")
-        self.cache.set("k2", "val2")
-
     def test_base(self):
-        self.assertEqual(self.cache.get("k3"), None)
-        self.assertEqual(self.cache.get("k2"), "val2")
-        self.assertEqual(self.cache.get("k1"), "val1")
+        cache = LRUCache(2)
+        cache.set("k1", "val1")
+        cache.set("k2", "val2")
 
-        self.cache.set("k3", "val3")
+        self.assertEqual(cache.get("k3"), None)
+        self.assertEqual(cache.get("k2"), "val2")
+        self.assertEqual(cache.get("k1"), "val1")
 
-        self.assertEqual(self.cache.get("k3"), "val3")
-        self.assertEqual(self.cache.get("k2"), None)
-        self.assertEqual(self.cache.get("k1"), "val1")
+        cache.set("k3", "val3")
+
+        self.assertEqual(cache.get("k3"), "val3")
+        self.assertEqual(cache.get("k2"), None)
+        self.assertEqual(cache.get("k1"), "val1")
+
+    def test_one_el(self):
+        cache = LRUCache(1)
+
+        cache.set('k1', 'val1')
+        self.assertEqual(cache.get('k1'), 'val1')
+
+        cache.set('k2', 'val2')
+        self.assertEqual(cache.get('k1'), None)
+        self.assertEqual(cache.get('k2'), 'val2')
+
+    def test_change_val(self):
+        cache = LRUCache(2)
+
+        cache.set('k1', 'val1')
+        cache.set('k2', 'val2')
+        self.assertEqual(cache.cache_dict['k1'].prev, cache.dbl.left_elem)
+        self.assertEqual(cache.cache_dict['k1'].next, cache.cache_dict['k2'])
+
+        cache.set('k1', 'val1')
+        self.assertEqual(cache.cache_dict['k1'].next, cache.dbl.right_elem)
+        self.assertEqual(cache.cache_dict['k1'].prev, cache.cache_dict['k2'])
+
+    def test_change_val_full(self):
+        cache = LRUCache(2)
+
+        cache.set('k1', 'val1')
+        cache.set('k2', 'val2')
+        cache.set('k2', 'changed val')
+
+        self.assertEqual(cache.get('k1'), 'val1')
+        self.assertEqual(cache.get('k2'), 'changed val')
 
     def test_links(self):
-        self.assertEqual(self.cache.cache_dict["k1"].next, self.cache.cache_dict["k2"])
-        self.cache.get("k1")
-        self.assertNotEqual(self.cache.cache_dict["k1"].next, self.cache.cache_dict["k2"])
+        cache = LRUCache(2)
+
+        cache.set('k1', 'val1')
+        cache.set('k2', 'val2')
+        self.assertEqual(cache.cache_dict['k1'].next, cache.cache_dict['k2'])
+
+        cache.get('k1')
+        self.assertEqual(cache.cache_dict['k2'].next, cache.cache_dict['k1'])
 
     def test_err(self):
-        self.cache.set("k3", "val3")
+        cache = LRUCache(2)
+        cache.set('k1', 'val1')
+        cache.set('k2', 'val2')
+
+        cache.set('k3', 'val3')
 
         with self.assertRaises(KeyError) as err:
-            print(self.cache.cache_dict["k1"])
+            print(cache.cache_dict['k1'])
 
         self.assertEqual(type(err.exception), KeyError)
-
