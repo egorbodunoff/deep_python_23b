@@ -1,5 +1,5 @@
-import sys
-import logging.config
+import argparse
+import logging
 
 
 class Filter(logging.Filter):
@@ -7,43 +7,28 @@ class Filter(logging.Filter):
         return len(record.msg.split()) % 2 == 0
 
 
-def get_logging_dict():
-    return {
-        'version': 1,
-        'formatters': {
-            'stdout_formatter': {
-                'format': 'stdout_log\t%(asctime)s\t%(levelname)s\t%(name)s\t%(message)s',
-            },
-            'file_formatter': {
-                'format': '\t%(asctime)s\t%(levelname)s\t%(name)s\t%(message)s',
-            },
-        },
-        'handlers': {
-            'stream_handler': {
-                'class': 'logging.StreamHandler',
-                'level': 'DEBUG',
-                'formatter': 'stdout_formatter',
-            },
-            'file_handler': {
-                'class': 'logging.FileHandler',
-                'level': 'DEBUG',
-                'formatter': 'file_formatter',
-                'filename': 'cache.log',
-                'mode': 'w',
-            },
-        },
-        'loggers': {
-            '': {
-                'level': 'DEBUG',
-                'handlers': ['file_handler'],
-            },
-            'stream_log': {
-                "level": 'DEBUG',
-                "handlers": ['stream_handler'],
-            },
+def get_base_logger():
+    logger = logging.getLogger()
+    logger.setLevel(logging.DEBUG)
 
-        },
-    }
+    file_handler = logging.FileHandler('cache.log', mode='w')
+    file_handler.setLevel(logging.DEBUG)
+    logger.addHandler(file_handler)
+
+    file_formatter = '\t%(asctime)s\t%(levelname)s\t%(name)s\t%(message)s'
+    file_handler.setFormatter(logging.Formatter(file_formatter))
+
+    return logger
+
+
+def get_stream_handler():
+    stream_handler = logging.StreamHandler()
+    stream_handler.setLevel(logging.DEBUG)
+
+    stdout_formatter = 'stdout_log\t%(asctime)s\t%(levelname)s\t%(name)s\t%(message)s'
+    stream_handler.setFormatter(logging.Formatter(stdout_formatter))
+
+    return stream_handler
 
 
 class Link:
@@ -121,10 +106,18 @@ class LRUCache:
 
 
 if __name__ == '__main__':
-    logging.config.dictConfig(get_logging_dict())
+    parser = argparse.ArgumentParser()
+    parser.add_argument('-s', action='store_true')
+    parser.add_argument('-f', action='store_true')
 
-    log = logging.getLogger('stream_log') if '-s' in sys.argv else logging.getLogger()
-    log.addFilter(Filter()) if '-f' in sys.argv else log
+    args = parser.parse_args()
+    s = args.s
+    f = args.f
+
+    log = get_base_logger()
+
+    log.addHandler(get_stream_handler()) if s else log
+    log.addFilter(Filter()) if f else log
     cache = LRUCache(2)
 
     cache.set('k1', 'val1')
