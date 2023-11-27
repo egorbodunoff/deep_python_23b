@@ -1,5 +1,5 @@
+from memory_profiler import profile
 import weakref
-import time
 
 
 class DictObj(dict):
@@ -30,41 +30,41 @@ class CommonClass:
         self.arr = arr
 
 
-N = 10 ** 6
-d1 = {'k1': 1, 'k2': 2, 'k3': 3}
-arr1 = [1, 2, '3', '4', 5, '6']
-arr_r = ListObj(arr1)
-d_r = DictObj(d1)
+@profile
+def com(n):
+    c = [CommonClass(d1, arr1) for _ in range(n)]
 
-def com():
-    t_start = time.time()
-    for _ in range(6):
-        com = [CommonClass(d1, arr1) for _ in range(N)]
-
-        for i in com:
-            i.arr[2] = 4
-            i.d['k2'] = 4
-    t_end = time.time() - t_start
-    print(f'изменение атрибутов класса с обычными атрибутами: {t_end / 6}')
-
-def slots():
-    t_start = time.time()
-    for _ in range(6):
-        slots = [SlotClass(d1, arr1) for _ in range(N)]
-
-        for i in slots:
-            i.arr[2] = 4
-            i.d['k2'] = 4
-    t_end = time.time() - t_start
-    print(f'изменение атрибутов класса с слотами: {t_end / 6}')
+    for i in c:
+        i.arr[2] = 4
+        i.d['k2'] = 4
 
 
-def ref():
-    t_start = time.time()
-    for _ in range(6):
-        ref = [RefClass(d_r, arr_r) for _ in range(N)]
-        for i in ref:
-            arr = i.wr_arr()
-            d = i.wr_d()
-    t_end = time.time() - t_start
-    print(f'создание экзэмпляров класса с атрибутами weakref: {t_end / 6}')
+@profile
+def slots(n):
+    sl = [SlotClass(d1, arr1) for _ in range(n)]
+
+    for i in sl:
+        i.arr[2] = 4
+        i.d['k2'] = 4
+
+
+@profile
+def ref(n):
+    r = [RefClass(d_r, arr_r) for _ in range(n)]
+
+    for i in r:
+        i.wr_arr()[2] = 4
+        i.wr_d()['k2'] = 4
+
+
+if __name__ == "__main__":
+    d1 = {'k1': 1, 'k2': 2, 'k3': 3}
+    arr1 = [1, 2, '3', '4', 5, '6']
+    arr_r = ListObj(arr1)
+    d_r = DictObj(d1)
+
+    N = 100000
+
+    com(N)
+    slots(N)
+    ref(N)
