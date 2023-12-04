@@ -37,9 +37,12 @@ class TestMetaClass(unittest.TestCase):
         self.assertEqual(cache.cache_dict['k1'].prev, cache.dbl.left_elem)
         self.assertEqual(cache.cache_dict['k1'].next, cache.cache_dict['k2'])
 
-        cache.set('k1', 'val1')
+        cache.set('k1', 'val3')
+        self.assertEqual(cache.cache_dict['k1'].value, 'val3')
         self.assertEqual(cache.cache_dict['k1'].next, cache.dbl.right_elem)
         self.assertEqual(cache.cache_dict['k1'].prev, cache.cache_dict['k2'])
+
+        self.assertEqual(cache.get('k1'), 'val3')
 
     def test_change_val_full(self):
         cache = LRUCache(2)
