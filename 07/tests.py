@@ -42,6 +42,22 @@ class TestStuff(unittest.IsolatedAsyncioTestCase):
         result = await fetch_content('url')
         self.assertEqual(result, 'No connection')
 
+    @patch('fetcher.aiohttp.ClientSession')
+    async def test_fetch_connection_err(self, mock_session):
+        mock_session.side_effect = aiohttp.ClientConnectionError
+
+        result = await fetch_content('https://ru.wikipedia.org/wiki/Роза')
+
+        self.assertEqual(result, 'Connection err')
+
+    @patch('fetcher.aiohttp.ClientSession.get')
+    async def test_fetch_invalid_url(self, mock_session):
+        mock_session.side_effect = aiohttp.InvalidURL(1)
+
+        result = await fetch_content('https://ru.wikipedia.org/wiki/Роза')
+
+        self.assertEqual(result, 'Invalid URL')
+
     @patch('builtins.print')
     @patch('fetcher.aiohttp.ClientSession.get')
     async def test_num_batch_fetch(self, mock_session, mock_print):
@@ -60,6 +76,8 @@ class TestStuff(unittest.IsolatedAsyncioTestCase):
             await main('urls.txt', i)
             time_ls.append(time.time() - start)
 
+            self.assertEqual(mock_print.call_args[0][0], {'foo': 2, 'joke': 3})
+
         for i in range(len(time_ls) - 1):
             self.assertGreater(time_ls[i], time_ls[i + 1])
 
@@ -68,6 +86,3 @@ class TestStuff(unittest.IsolatedAsyncioTestCase):
             await main('urls.txt', 'text')
 
         self.assertEqual(type(err.exception), ValueError)
-
-
-

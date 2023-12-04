@@ -6,9 +6,13 @@ import argparse
 
 
 def get_url(file_name):
-    with open(file_name, 'r') as urls:
-        for url in urls:
-            yield url.rstrip()
+    try:
+        with open(file_name, 'r') as urls:
+            for url in urls:
+                yield url.rstrip()
+
+    except FileNotFoundError:
+        yield 'File not found'
 
 
 def response_process(data, k):
@@ -23,15 +27,22 @@ def response_process(data, k):
 
 
 async def fetch_content(url):
-    async with aiohttp.ClientSession() as session:
-        async with session.get(url) as response:
-            if response.status == 200:
-                data = await response.text()
-                popular_words = response_process(data, 2)
-            else:
-                popular_words = 'No connection'
+    try:
+        async with aiohttp.ClientSession() as session:
+            async with session.get(url) as response:
+                if response.status == 200:
+                    data = await response.text()
+                    popular_words = response_process(data, 2)
+                else:
+                    popular_words = 'No connection'
 
-    return popular_words
+            return popular_words
+
+    except aiohttp.InvalidURL:
+        return 'Invalid URL'
+
+    except aiohttp.ClientConnectionError:
+        return 'Connection err'
 
 
 async def fetch_worker(que):
@@ -66,11 +77,13 @@ async def main(file_name, c):
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
     parser.add_argument('-c', help='количество воркеров')
+    parser.add_argument('-f', help='файл с URLами')
 
     args = parser.parse_args()
     C = args.c
+    f = args.f
 
     if not C.isdecimal():
         raise ValueError('количество воркеров должно быть целым числом')
 
-    asyncio.run(main('urls.txt', C))
+    asyncio.run(main(f, C))
